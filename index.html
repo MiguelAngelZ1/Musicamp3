@@ -8,9 +8,6 @@
   <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Open+Sans&display=swap" rel="stylesheet">
 
-  <!-- Animaciones CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
   <!-- Íconos Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -93,19 +90,10 @@
       position: relative;
     }
 
-    .card-back .iconos {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 1.5em;
-      color: #c2185b;
-      animation: pulse 2s infinite;
-    }
-
     .firma {
       text-align: right;
       font-weight: bold;
-      margin-top: auto;
+      margin-top: 0px;
       font-size: 1.1em;
     }
 
@@ -113,19 +101,45 @@
       content: " ♥";
       color: #e91e63;
       font-size: 1.3em;
-      margin-left: 5px;
+      margin-left: 0px;
     }
 
-    .btn-corazon {
-      background: transparent;
-      border: none;
-      font-size: 2.5em;
-      color: #e91e63;
-      cursor: pointer;
-      animation: heartBeat 2s infinite;
-      margin-bottom: 30px;
-      z-index: 1;
-    }
+  .btn-corazon {
+  background: transparent;
+  border: 2px solid #e91e63;
+  border-radius: 50px;
+  padding: 12px 25px;
+  font-size: 2.5em;
+  color: #e91e63;
+  cursor: pointer;
+  animation: heartBeat 2s infinite, pulseEffect 1s ease-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.btn-corazon:hover {
+  transform: scale(1.1);
+}
+
+.btn-corazon i {
+  margin-right: 0px;
+}
+
+@keyframes pulseEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-40px); }
@@ -140,23 +154,6 @@
       .card-container {
         height: 500px;
       }
-    }
-
-    /* Máquina de escribir */
-    .typewriter-text {
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: 2px solid #c2185b;
-      animation: typing 5s steps(80, end), blink .8s infinite;
-    }
-
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
-    }
-
-    @keyframes blink {
-      50% { border-color: transparent; }
     }
 
     /* Corazones flotando */
@@ -183,6 +180,27 @@
       from { transform: translateY(100vh) scale(0.5); }
       to { transform: translateY(-10vh) scale(1.2); }
     }
+    
+    @keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.card-back.show {
+  animation: fadeSlideIn 0.8s ease forwards;
+}
+
+#textoFijo {
+  max-height: 300px; /* Limita la altura visible */
+  overflow-y: auto; /* Activa el desplazamiento vertical */
+  padding-right: 10px; /* Para que el texto no toque el borde */
+}
   </style>
 </head>
 <body>
@@ -196,23 +214,21 @@
       <div class="card-face card-front">
         <img src="https://i.imgur.com/vxNJK38.jpeg" alt="Pareja feliz">
       </div>
-      <div class="card-face card-back animate__animated animate__fadeInRight">
-        <div class="iconos">
-          <i class="fas fa-heart"></i> <i class="fas fa-kiss-wink-heart"></i>
-        </div>
-        <div id="textoMaquina">
-          <!-- Aquí se escribirá con efecto -->
+      <div class="card-face card-back">
+        <div id="textoFijo">
+          Con esto, quiero dejar plasmado y marcado el momento en que todo cambia en nuestras vidas y sobre todo en nuestros corazones. ❤️ Todo lo que vivimos hasta ahora quiero que sea un aprendizaje hacia una vida juntos que ya dejamos marcado en el cosmos ese 25 de abril que te hice y me hiciste tu compañero de vida por siempre, quiero que sepas que no hay momento que quede más marcado en mi retina que ese y quiero que siempre tengas presente que lo llevaré siempre en lo más profundo de mi alma como lo mejor que me paso. ❤️ Te Amo como siempre quisiste que te amen, te adoro como siempre quisiste que lo hagan, te juro que no hay nada que para mi valga más que volver a intentarlo por amor, que volver a intentar por ganas, sos una mujer que vale su peso en oro y más y yo? Yo solo soy un afortunado que tuvo la suerte de tenerte y de disfrutarte, perdón por las veces que no demuestro lo que digo, perdón por las veces que no te dije lo hermosa que sos o que te amo, perdón. PERO QUIERO QUE SEPAS QUE HOY, MAÑANA Y SIEMPRE ESTARE A TU LADO MI BEBITA HERMOSA ❤️
         </div>
         <p class="firma">
-          Con todo mi amor,<br><strong>[Tu nombre]</strong>
+          Con todo mi amor,<br><strong>Tu Bebito</strong>
         </p>
       </div>
     </div>
   </div>
 
   <button class="btn-corazon" onclick="girarTarjeta()" aria-label="Girar tarjeta">
-    <i class="fas fa-heartbeat"></i>
-  </button>
+  <i class="fas fa-heartbeat"></i>
+  <span></span>
+</button>
 
   <!-- Música de fondo -->
   <audio id="audio" style="display: none;">
@@ -222,37 +238,22 @@
 
   <script>
     function girarTarjeta() {
-      const card = document.getElementById('tarjeta');
-      card.classList.toggle('flip');
+  const card = document.getElementById('tarjeta');
+  card.classList.toggle('flip');
 
-      const audio = document.getElementById('audio');
-      if (audio.paused) {
-        audio.play().catch(error => console.log("Reproducción bloqueada:", error));
-      }
+  const cardBack = document.querySelector('.card-back');
+  if (card.classList.contains('flip')) {
+    cardBack.classList.add('animate__animated', 'animate__fadeInRight');
+  } else {
+    cardBack.classList.remove('animate__animated', 'animate__fadeInRight');
+  }
 
-      if (card.classList.contains('flip')) {
-        escribirTextoMaquina();
-      }
-    }
-
-    function escribirTextoMaquina() {
-      const contenedor = document.getElementById('textoMaquina');
-      contenedor.innerHTML = ""; // Limpia antes de escribir
-      const texto = `Mi amor, cada momento a tu lado es un regalo. Tu sonrisa, tu fuerza, tu ternura… hacen que mi mundo tenga sentido. En tus brazos encontré un hogar, en tu voz una melodía, y en tu mirada un futuro. Gracias por ser mi todo. No hay palabras suficientes para expresarte cuánto te amo, pero quiero intentarlo cada día de mi vida.`;
-      let i = 0;
-
-      const interval = setInterval(() => {
-        if (i < texto.length) {
-          contenedor.innerHTML += texto.charAt(i);
-          contenedor.classList.add("typewriter-text");
-          i++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 50);
-    }
-
-    // Generar corazones flotando
+  const audio = document.getElementById('audio');
+  if (audio.paused) {
+    audio.play().catch(error => console.log("Reproducción bloqueada:", error));
+  }
+}
+    // Corazones flotando
     function lanzarCorazones() {
       const hearts = document.getElementById('hearts');
       for (let i = 0; i < 20; i++) {
@@ -270,7 +271,7 @@
       }
     }
 
-    setInterval(lanzarCorazones, 1500); // Cada 1.5s lanza nuevos corazones
+    setInterval(lanzarCorazones, 1500);
   </script>
 
 </body>
